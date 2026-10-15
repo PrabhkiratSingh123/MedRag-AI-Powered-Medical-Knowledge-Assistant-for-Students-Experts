@@ -20,11 +20,15 @@ load_dotenv(dotenv_path=_env_path, override=True)
 
 # ─── MongoDB ─────────────────────────────────────────────────────────────────
 _raw_uri: str = os.getenv("MONGODB_URI", "")
-if _raw_uri and "tlsAllowInvalidCertificates" not in _raw_uri:
+
+# Change this block in your config.py to match your implementation:
+if _raw_uri and not any(flag in _raw_uri for flag in ["tlsAllowInvalidCertificates", "tlsInsecure"]):
     sep = "&" if "?" in _raw_uri else "?"
-    MONGODB_URI: str = f"{_raw_uri}{sep}tlsAllowInvalidCertificates=true"
+    MONGODB_URI: str = f"{_raw_uri}{sep}tlsInsecure=true"
 else:
     MONGODB_URI: str = _raw_uri
+
+
 
 MONGODB_DB_NAME: str         = os.getenv("MONGODB_DB_NAME",         "medrag")
 MONGODB_COLLECTION_NAME: str = os.getenv("MONGODB_COLLECTION_NAME", "medical_chunks")
@@ -73,13 +77,24 @@ def validate_config() -> list[str]:
 
 
 def get_mongo_client():
-    """Return a MongoClient with certifi SSL fallback for Windows compatibility."""
+    """Return a MongoClient with robust SSL handling for Windows compatibility.
+
+    OpenSSL 1.1.1 (bundled with CPython 3.10) has known TLS handshake issues
+    with MongoDB Atlas.  We work around this with ``tlsInsecure=True`` which
+    disables cert verification and hostname checking while keeping encryption.
+    """
     from pymongo import MongoClient
-    kwargs: dict = {}
+
+    # Keep tlsInsecure to handle the Windows/Atlas certificate fallback cleanly
+    kwargs: dict = {
+        "tls": True,
+        "tlsInsecure": True,
+    }
+
     try:
         import certifi
         kwargs["tlsCAFile"] = certifi.where()
     except ImportError:
         pass
-    kwargs["tlsAllowInvalidCertificates"] = True
+
     return MongoClient(MONGODB_URI, **kwargs)
