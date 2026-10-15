@@ -1,0 +1,36 @@
+# Core LangChain packages
+langchain==0.3.25
+langchain-community==0.3.24
+langchain-huggingface>=0.1.0
+langchain-mongodb==0.5.0
+langchain-core>=0.3.58,<1.0.0
+
+# LangGraph (agentic orchestration)
+langgraph==0.2.73
+
+# Groq Cloud API (fast LLM inference)
+langchain-groq==0.2.4
+groq>=0.12.0
+
+# HuggingFace Embeddings (local, free)
+sentence-transformers==3.4.1
+transformers==4.51.3
+torch==2.6.0
+
+# MongoDB
+pymongo[srv]==4.10.1
+
+# Document loaders
+pypdf==5.4.0
+pandas==2.2.3
+unstructured==0.17.2
+openpyxl==3.1.5
+
+# Streamlit UI
+streamlit==1.44.1
+
+# Utilities
+python-dotenv==1.1.0
+tiktoken==0.9.0
+tqdm==4.67.1
+colorlog==6.9.0

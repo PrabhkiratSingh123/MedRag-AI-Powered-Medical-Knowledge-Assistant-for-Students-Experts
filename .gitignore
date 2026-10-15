@@ -1,0 +1,48 @@
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Secrets / environment ─────────────────────────────────────────────────────
+.env
+# Keep the example file (no real secrets)
+!.env.example
+
+# ── Streamlit ─────────────────────────────────────────────────────────────────
+.streamlit/secrets.toml
+
+# ── ML model caches ───────────────────────────────────────────────────────────
+.cache/
+*.bin
+*.pt
+*.pth
+sentence_transformers/
+huggingface/
+~/.cache/
+
+# ── Data / uploads ────────────────────────────────────────────────────────────
+data/documents/*
+# Keep the folder itself
+!data/documents/.gitkeep
+
+# ── IDE / OS ──────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.DS_Store
+Thumbs.db
+
+# ── Logs / temp ───────────────────────────────────────────────────────────────
+*.log
+*.tmp
